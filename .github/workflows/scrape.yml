@@ -39,10 +39,15 @@ jobs:
       - name: Scrape prices
         run: python pipeline/pipeline.py --phase scrape
 
+      - name: Kill any leftover browser processes
+        if: always()
+        run: pkill -f chromium || true; pkill -f playwright || true
+
   enrich:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     needs: scrape
+    if: always()
 
     steps:
       - name: Checkout repo
