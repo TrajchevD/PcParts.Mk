@@ -120,7 +120,7 @@ if __name__ == "__main__":
         fn = store_map.get(name)
         if not fn:
             log.error(f"Unknown store '{name}'. Available: {list(store_map)}")
-            sys.exit(1)
+            os._exit(1)
         log.info(f"Running single-store scrape: {name}")
         products = fn()
         _load_store(name, products)
@@ -131,3 +131,6 @@ if __name__ == "__main__":
             retry_failed=args.retry_failed,
             workers=args.workers,
         )
+
+    # Force-exit to kill any lingering Playwright/Chromium subprocesses immediately
+    os._exit(0)
