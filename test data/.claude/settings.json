@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Read(//c/Users/david/OneDrive/Desktop/PcPartsMk/pipeline/**)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}

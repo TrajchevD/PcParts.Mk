@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+
+  # ── MySQL database ────────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE:      ${DB_NAME}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d:ro   # optional: seed SQL scripts
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASS}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  # ── FastAPI backend ───────────────────────────────────────────────
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_HOST: db          # override localhost → docker service name
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  # ── React frontend + nginx reverse proxy ─────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE: ""   # empty = same-origin (nginx proxies /api/)
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ssl:/etc/nginx/ssl:ro   # mount Let's Encrypt certs here
+    depends_on:
+      - backend
+
+  # ── Scraper + enrichment scheduler ───────────────────────────────
+  pipeline:
+    build: "./pipeline"
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(PYTHONIOENCODING=utf-8 python test_normalizer.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python backfill_model_keys.py)",
+      "WebFetch(domain:www.anhoch.com)",
+      "WebSearch",
+      "Bash(python test_enrichment.py cpu gpu)",
+      "Bash(python test_enrichment.py mb ram storage)",
+      "Bash(python test_enrichment.py cpu mb)",
+      "Bash(python test_enrichment.py)",
+      "WebFetch(domain:www.setec.mk)",
+      "Bash(python investigate_stores.py)",
+      "Bash(rm -rf \"C:\\\\Users\\\\david\\\\OneDrive\\\\Desktop\\\\test data\\\\enrichment\")",
+      "Bash(rm -rf \"C:\\\\Users\\\\david\\\\OneDrive\\\\Desktop\\\\test data\\\\Scraping\")",
+      "Bash(python -)",
+      "Bash(python pipeline.py --phase scrape)",
+      "Bash(python pipeline.py --phase enrich --retry-failed)",
+      "Bash(python -c \"from config import ENRICH_LIMIT; print\\('ENRICH_LIMIT:', ENRICH_LIMIT\\)\")"
+    ]
+  }
+}

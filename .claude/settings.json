@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\david\\\\OneDrive\\\\Desktop\\\\PcPartsMk\" -Force | ForEach-Object { \"$\\($_.Name\\) [$\\( if\\($_.PSIsContainer\\) { 'Folder' } else { 'File' } \\)]\" })",
+      "Bash(ls \"c:\\\\Users\\\\david\\\\OneDrive\\\\Desktop\\\\PcPartsMk\\\\\" && cat \"c:\\\\Users\\\\david\\\\OneDrive\\\\Desktop\\\\PcPartsMk\\\\.gitignore\" 2>/dev/null || echo \"No .gitignore\")",
+      "Read(//c/Users/david/OneDrive/Desktop/PcPartsMk\" && cat c:UsersdavidOneDriveDesktopPcPartsMk.gitignore 2>/dev/**)",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\david\\\\OneDrive\\\\Desktop\\\\PcPartsMk\\\\frontend\\\\src\\\\styles-v2.css\" | Measure-Object -Line\\).Lines)",
+      "Bash(xxd)",
+      "Bash(taskkill /F /IM python.exe)",
+      "Bash(Start-Sleep 1)",
+      "PowerShell(Get-Process -Name python -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force)",
+      "PowerShell(Get-Command uvicorn -ErrorAction SilentlyContinue)",
+      "PowerShell(python -m uvicorn --version 2>&1)",
+      "PowerShell(New-Item -ItemType Directory -Path \"c:\\\\Users\\\\david\\\\OneDrive\\\\Desktop\\\\PcPartsMk\\\\.github\\\\workflows\" -Force)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(dir *)",
+      "Bash(grep -E \"\\\\.\\(py\\)$\")",
+      "Read(//c/Users/david/.claude/projects/c--Users-david-OneDrive-Desktop-PcPartsMk/memory/**)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\david\\.claude\\projects\\c--Users-david-OneDrive-Desktop-PcPartsMk\\memory"
+    ]
+  }
+}
