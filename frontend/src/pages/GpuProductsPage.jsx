@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { fetchGpus } from "../api/gpuProducts";
 import GpuCard from "../components/gpu/GpuCard";
 import GpuDetailsModal from "../components/gpu/GpuDetailsModal";
-import CategoryNav from "../components/CategoryNav";
+import MobileNavBar from "../components/MobileNavBar";
 
 export default function GpuProductsPage() {
+  const [searchParams] = useSearchParams();
   const [gpus, setGpus] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGpu, setSelectedGpu] = useState(null);
   const [sort, setSort] = useState("price_asc");
   const [filters, setFilters] = useState({ brand: "", min_vram: "", min_price: "", max_price: "" });
+  const [search, setSearch] = useState(searchParams.get("q") || "");
+
+  useEffect(() => { setSearch(searchParams.get("q") || ""); }, [searchParams]);
 
   useEffect(() => {
     setLoading(true);
     fetchGpus({
       sort,
+      search: search || undefined,
       filters: {
         brand:     filters.brand     || undefined,
         min_vram:  filters.min_vram  ? Number(filters.min_vram) : undefined,
@@ -22,15 +28,20 @@ export default function GpuProductsPage() {
         max_price: filters.max_price || undefined,
       },
     }).then(setGpus).finally(() => setLoading(false));
-  }, [filters, sort]);
+  }, [filters, sort, search]);
 
   return (
     <div className="cpu-page">
-      <CategoryNav />
+      <MobileNavBar title="GPUs" />
       <aside className="cpu-filters">
         <h3 onClick={() => setSort(s => s === "price_asc" ? "price_desc" : "price_asc")}>
           GPUs <span>{sort === "price_asc" ? "↑" : "↓"}</span>
         </h3>
+
+        <label>
+          Search
+          <input type="text" placeholder="e.g. RTX 4070" value={search} onChange={e => setSearch(e.target.value)} />
+        </label>
 
         <label>
           Brand

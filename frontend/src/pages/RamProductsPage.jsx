@@ -1,25 +1,35 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { fetchRams } from "../api/ramProducts";
 import RamCard from "../components/ram/RamCard";
 import RamDetailsModal from "../components/ram/RamDetailsModal";
-import CategoryNav from "../components/CategoryNav";
+import MobileNavBar from "../components/MobileNavBar";
 
 export default function RamProductsPage() {
+  const [searchParams] = useSearchParams();
   const [rams, setRams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [filters, setFilters] = useState({ memory_type: "", capacity_gb: "", min_price: "", max_price: "" });
+  const [search, setSearch] = useState(searchParams.get("q") || "");
+
+  useEffect(() => { setSearch(searchParams.get("q") || ""); }, [searchParams]);
 
   useEffect(() => {
     setLoading(true);
-    fetchRams(filters).then(setRams).finally(() => setLoading(false));
-  }, [filters]);
+    fetchRams({ ...filters, search: search || undefined }).then(setRams).finally(() => setLoading(false));
+  }, [filters, search]);
 
   return (
     <div className="cpu-page">
-      <CategoryNav />
+      <MobileNavBar title="RAM" />
       <aside className="cpu-filters">
         <h3>RAM</h3>
+
+        <label>
+          Search
+          <input type="text" placeholder="e.g. Corsair 32GB" value={search} onChange={e => setSearch(e.target.value)} />
+        </label>
 
         <label>
           Memory Type

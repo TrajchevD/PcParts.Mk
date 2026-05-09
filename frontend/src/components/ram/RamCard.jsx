@@ -10,6 +10,7 @@ export default function RamCard({ ram, onDetails, onAdd }) {
           <img
             src={ram.image_url}
             alt="RAM"
+            referrerPolicy="no-referrer"
             onError={(e) => (e.target.style.display = "none")}
           />
         </div>

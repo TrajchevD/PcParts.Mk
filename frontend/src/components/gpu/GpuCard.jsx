@@ -7,7 +7,7 @@ export default function GpuCard({ gpu, onAdd, onDetails }) {
         onClick={() => onDetails(gpu.gpu_model)}
       >
         <div className="pc-card-image">
-          <img src={gpu.image_url} alt={gpu.gpu_model} />
+          <img src={gpu.image_url} alt={gpu.gpu_model} referrerPolicy="no-referrer" onError={(e) => (e.target.style.display = "none")} />
         </div>
 
         <div className="pc-card-title">{gpu.gpu_model}</div>

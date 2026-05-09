@@ -1,6 +1,7 @@
 import { apiFetch } from "./api";
 
 export function fetchRams({
+  search,
   memory_type,
   capacity_gb,
   min_price,
@@ -10,6 +11,7 @@ export function fetchRams({
 } = {}) {
   const params = new URLSearchParams();
 
+  if (search) params.append("search", search);
   if (memory_type) params.append("memory_type", memory_type);
   if (capacity_gb) params.append("capacity_gb", capacity_gb);
   if (min_price) params.append("min_price", min_price);

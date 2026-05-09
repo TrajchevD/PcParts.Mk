@@ -1,7 +1,8 @@
 import { apiFetch } from "./api";
 
 export function fetchMotherboards({
-sort = "price_asc",
+  search,
+  sort = "price_asc",
   limit = 24,
   offset = 0,
   socket,
@@ -12,6 +13,7 @@ sort = "price_asc",
 } = {}) {
   const params = new URLSearchParams();
 
+  if (search) params.append("search", search);
   params.append("sort", sort);
   params.append("limit", limit);
   params.append("offset", offset);

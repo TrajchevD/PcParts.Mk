@@ -1,8 +1,8 @@
 const SLOT_LABELS = {
-  cpu: "CPU",
-  gpu: "GPU",
-  ram: "RAM",
-  mb: "Motherboard",
+  cpu:     "CPU",
+  gpu:     "GPU",
+  ram:     "RAM",
+  mb:      "Motherboard",
   storage: "Storage",
   recommended_psu_w: "Recommended PSU",
 };
@@ -30,12 +30,12 @@ export default function RecommendationBuildView({ title, data, highlight }) {
       </div>
 
       {Object.entries(build).map(([key, value]) => {
-        if (!value) return null;
+        if (!value || !(key in SLOT_LABELS)) return null;
 
         if (key === "recommended_psu_w") {
           return (
             <div key={key} className="recommend-part">
-              <div className="recommend-part-name">{SLOT_LABELS[key] ?? key.toUpperCase()}</div>
+              <div className="recommend-part-name">{SLOT_LABELS[key]}</div>
               <div className="recommend-part-model">{value}W</div>
             </div>
           );
@@ -43,7 +43,7 @@ export default function RecommendationBuildView({ title, data, highlight }) {
 
         return (
           <div key={key} className="recommend-part">
-            <div className="recommend-part-name">{SLOT_LABELS[key] ?? key.toUpperCase()}</div>
+            <div className="recommend-part-name">{SLOT_LABELS[key]}</div>
             <div className="recommend-part-model">{getModelName(value)}</div>
             {value.min_price != null && (
               <div className="recommend-part-price">{value.min_price?.toLocaleString()} MKD</div>

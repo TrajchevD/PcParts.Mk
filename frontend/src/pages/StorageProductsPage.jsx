@@ -1,30 +1,40 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { fetchStorage } from "../api/storageProducts";
 import StorageCard from "../components/storage/StorageCard";
 import StorageDetailsModal from "../components/storage/StorageDetailsModal";
-import CategoryNav from "../components/CategoryNav";
+import MobileNavBar from "../components/MobileNavBar";
 
 export default function StorageProductsPage({ onSelect }) {
+  const [searchParams] = useSearchParams();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [sort, setSort] = useState("price_asc");
   const [filters, setFilters] = useState({ type: "", capacity_gb: "" });
+  const [search, setSearch] = useState(searchParams.get("q") || "");
+
+  useEffect(() => { setSearch(searchParams.get("q") || ""); }, [searchParams]);
 
   useEffect(() => {
     setLoading(true);
-    fetchStorage({ ...filters, sort }).then(setItems).finally(() => setLoading(false));
-  }, [filters, sort]);
+    fetchStorage({ ...filters, sort, search: search || undefined }).then(setItems).finally(() => setLoading(false));
+  }, [filters, sort, search]);
 
   const handleAdd = onSelect ? (id) => onSelect(id) : () => {};
 
   return (
     <div className="cpu-page">
-      <CategoryNav />
+      <MobileNavBar title="Storage" />
       <aside className="cpu-filters">
         <h3 onClick={() => setSort(s => s === "price_asc" ? "price_desc" : "price_asc")}>
           Storage <span>{sort === "price_asc" ? "↑" : "↓"}</span>
         </h3>
+
+        <label>
+          Search
+          <input type="text" placeholder="e.g. Samsung 1TB" value={search} onChange={e => setSearch(e.target.value)} />
+        </label>
 
         <label>
           Type

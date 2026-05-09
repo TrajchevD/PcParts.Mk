@@ -141,11 +141,10 @@ export default function PcBuilderV2Page({ buildId }) {
               <h2 className="builder-title">{build.name}</h2>
               <button
                 className="btn-text"
-                style={{ fontSize: "1.1rem", padding: "4px 8px" }}
-                title="Rename build"
+                style={{ fontSize: "0.8rem", padding: "4px 10px", opacity: 0.6 }}
                 onClick={() => setEditingName(true)}
               >
-                ✏
+                Rename
               </button>
             </>
           )}
@@ -181,11 +180,36 @@ export default function PcBuilderV2Page({ buildId }) {
       <div className="mob-builder mob-only">
         {/* Top bar */}
         <div className="mob-topbar">
-          <span className="mob-page-title">PC Builder</span>
-          <div className="mob-topbar-right">
-            <button className="mob-icon-btn">↑</button>
-            <button className="mob-icon-btn mob-icon-btn-accent" onClick={toggleSidebar}>☰</button>
-          </div>
+          {editingName ? (
+            <>
+              <input
+                style={{
+                  flex: 1, background: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.15)", borderRadius: 8,
+                  padding: "6px 10px", color: "var(--text-main)", fontSize: "0.9rem",
+                }}
+                value={tempName}
+                autoFocus
+                onChange={e => setTempName(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === "Enter")  handleRename();
+                  if (e.key === "Escape") { setEditingName(false); setTempName(build.name); }
+                }}
+              />
+              <button className="mob-icon-btn mob-icon-btn-accent" onClick={handleRename} style={{ marginLeft: 6 }}>✓</button>
+              <button className="mob-icon-btn" onClick={() => { setEditingName(false); setTempName(build.name); }} style={{ marginLeft: 4 }}>✕</button>
+            </>
+          ) : (
+            <>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, flex: 1, minWidth: 0 }}>
+                <span className="mob-page-title" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {build.name}
+                </span>
+                <button className="mob-icon-btn" style={{ flexShrink: 0, fontSize: "0.8rem" }} onClick={() => setEditingName(true)}>✏</button>
+              </div>
+              <button className="mob-icon-btn mob-icon-btn-accent" onClick={toggleSidebar}>☰</button>
+            </>
+          )}
         </div>
 
         {error && <div className="compat-error" style={{ margin: "0 16px 8px" }}>⚠️ {error}</div>}

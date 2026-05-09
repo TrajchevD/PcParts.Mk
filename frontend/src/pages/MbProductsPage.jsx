@@ -1,28 +1,38 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { fetchMotherboards } from "../api/mbProducts";
 import MbCard from "../components/mb/MbCard";
 import MbDetailsModal from "../components/mb/MbDetailsModal";
-import CategoryNav from "../components/CategoryNav";
+import MobileNavBar from "../components/MobileNavBar";
 
 export default function MbProductsPage() {
+  const [searchParams] = useSearchParams();
   const [mbs, setMbs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMb, setSelectedMb] = useState(null);
   const [sort, setSort] = useState("price_asc");
   const [filters, setFilters] = useState({ socket: "", memory_type: "", form_factor: "", min_price: "", max_price: "" });
+  const [search, setSearch] = useState(searchParams.get("q") || "");
+
+  useEffect(() => { setSearch(searchParams.get("q") || ""); }, [searchParams]);
 
   useEffect(() => {
     setLoading(true);
-    fetchMotherboards({ ...filters, sort }).then(setMbs).finally(() => setLoading(false));
-  }, [filters, sort]);
+    fetchMotherboards({ ...filters, sort, search: search || undefined }).then(setMbs).finally(() => setLoading(false));
+  }, [filters, sort, search]);
 
   return (
     <div className="cpu-page">
-      <CategoryNav />
+      <MobileNavBar title="Motherboards" />
       <aside className="cpu-filters">
         <h3 onClick={() => setSort(s => s === "price_asc" ? "price_desc" : "price_asc")}>
           Motherboards <span>{sort === "price_asc" ? "↑" : "↓"}</span>
         </h3>
+
+        <label>
+          Search
+          <input type="text" placeholder="e.g. B650 Gaming" value={search} onChange={e => setSearch(e.target.value)} />
+        </label>
 
         <label>
           Socket

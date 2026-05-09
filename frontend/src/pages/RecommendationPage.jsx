@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { recommendBuild } from "../api/recommendationApi";
 import RecommendationBuildView from "../components/recommendation/RecommendationBuildView";
-import { createBuild } from "../api/buildManager";
 
 const USE_CASE_MAP = { Gaming: "aaa", Workstation: "aaa", Office: "school", Streaming: "esports" };
-const USE_CASES  = ["Gaming", "Workstation", "Office", "Streaming"];
-const PLATFORMS  = ["AMD", "Intel", "Either"];
-const PRIORITIES = ["Performance", "Value", "Efficiency"];
+const USE_CASES   = ["Gaming", "Workstation", "Office", "Streaming"];
 
 const PART_ICONS  = { cpu: "⬡", gpu: "▣", ram: "≡", mb: "⊞", storage: "◧" };
 const PART_LABELS = { cpu: "CPU", gpu: "GPU", ram: "RAM", mb: "Motherboard", storage: "Storage" };
@@ -18,18 +15,8 @@ function getPartName(value) {
 }
 
 function MobRecCard({ title, data, badge, badgeCls, borderColor }) {
-  const navigate = useNavigate();
   if (!data) return null;
   const { build, total_price } = data;
-
-  async function handleLoad() {
-    try {
-      const d = await createBuild(title);
-      navigate(`/builder-v2/${d.build_id}`);
-    } catch {
-      navigate("/builds");
-    }
-  }
 
   return (
     <div className="mob-rec-card" style={borderColor ? { borderColor } : {}}>
@@ -39,7 +26,20 @@ function MobRecCard({ title, data, badge, badgeCls, borderColor }) {
       </div>
       <div className="mob-rec-parts">
         {Object.entries(build).map(([key, value]) => {
-          if (!value || key === "recommended_psu_w") return null;
+          if (!value) return null;
+
+          if (key === "recommended_psu_w") {
+            return (
+              <div key={key} className="mob-rec-part-row">
+                <span className="mob-rec-part-icon">⚡</span>
+                <div className="mob-rec-part-info">
+                  <span className="mob-rec-part-cat">PSU</span>
+                  <span className="mob-rec-part-name">{value}W recommended</span>
+                </div>
+              </div>
+            );
+          }
+
           const name  = getPartName(value);
           const price = value.min_price;
           return (
@@ -57,15 +57,10 @@ function MobRecCard({ title, data, badge, badgeCls, borderColor }) {
         })}
       </div>
       <div className="mob-rec-card-bottom">
-        <div>
-          <div className="mob-rec-total-lbl">Total</div>
-          <div className="mob-rec-total-price">
-            {total_price?.toLocaleString()} <span className="mob-rec-total-den">ден</span>
-          </div>
+        <div className="mob-rec-total-lbl">Total</div>
+        <div className="mob-rec-total-price">
+          {total_price?.toLocaleString()} <span className="mob-rec-total-den">ден</span>
         </div>
-        <button className="mob-load-btn" onClick={handleLoad}>
-          Load into builder →
-        </button>
       </div>
     </div>
   );
@@ -73,14 +68,12 @@ function MobRecCard({ title, data, badge, badgeCls, borderColor }) {
 
 export default function RecommendationPage() {
   const { toggleSidebar } = useOutletContext() || {};
-  const [budget, setBudget]     = useState(100000);
-  const [profile, setProfile]   = useState("aaa");
-  const [useCase, setUseCase]   = useState("Gaming");
-  const [platform, setPlatform] = useState("AMD");
-  const [priority, setPriority] = useState("Performance");
-  const [result, setResult]     = useState(null);
-  const [loading, setLoading]   = useState(false);
-  const [error, setError]       = useState("");
+  const [budget, setBudget]   = useState(100000);
+  const [profile, setProfile] = useState("aaa");
+  const [useCase, setUseCase] = useState("Gaming");
+  const [result, setResult]   = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState("");
 
   async function handleGenerate() {
     if (loading) return;
@@ -142,7 +135,12 @@ export default function RecommendationPage() {
           )}
         </div>
         {error && <div className="compat-error">⚠️ {error}</div>}
-        {result && (
+        {result?.error === "budget_too_low" && (
+          <div className="compat-error">
+            ⚠️ Budget too low for any complete build. Minimum recommended: {result.minimum_budget?.toLocaleString()} MKD
+          </div>
+        )}
+        {result && !result.error && (
           <div className="recommend-builds">
             <RecommendationBuildView title="Intel Build" data={result.intel} highlight={result.winner === "intel"} />
             <RecommendationBuildView title="AMD Build"   data={result.amd}   highlight={result.winner === "amd"} />
@@ -211,38 +209,6 @@ export default function RecommendationPage() {
             </div>
           </div>
 
-          {/* Platform */}
-          <div className="mob-form-group">
-            <span className="mob-form-label">Platform</span>
-            <div className="mob-chips">
-              {PLATFORMS.map(p => (
-                <button
-                  key={p}
-                  className={`mob-chip${platform === p ? " mob-chip-active" : ""}`}
-                  onClick={() => setPlatform(p)}
-                >
-                  {p}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Priority */}
-          <div className="mob-form-group">
-            <span className="mob-form-label">Priority</span>
-            <div className="mob-chips">
-              {PRIORITIES.map(pr => (
-                <button
-                  key={pr}
-                  className={`mob-chip${priority === pr ? " mob-chip-active" : ""}`}
-                  onClick={() => setPriority(pr)}
-                >
-                  {pr}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Generate */}
           <button
             className="mob-generate-btn"
@@ -256,13 +222,18 @@ export default function RecommendationPage() {
         {error && (
           <div className="compat-error" style={{ margin: "0 16px 8px" }}>⚠️ {error}</div>
         )}
+        {result?.error === "budget_too_low" && (
+          <div className="compat-error" style={{ margin: "0 16px 8px" }}>
+            ⚠️ Budget too low. Minimum: {result.minimum_budget?.toLocaleString()} ден
+          </div>
+        )}
 
         <div className="mob-divider" />
 
         {/* Results */}
         <div className="mob-results-header">Results</div>
 
-        {result ? (
+        {result && !result.error ? (
           <>
             {result.intel && (
               <MobRecCard
@@ -283,10 +254,12 @@ export default function RecommendationPage() {
             )}
           </>
         ) : (
-          <div className="mob-no-results">
-            <span>🤖</span>
-            <p>Set your preferences above<br />and tap Generate Builds.</p>
-          </div>
+          !result?.error && (
+            <div className="mob-no-results">
+              <span>🤖</span>
+              <p>Set your preferences above<br />and tap Generate Builds.</p>
+            </div>
+          )
         )}
       </div>
     </>

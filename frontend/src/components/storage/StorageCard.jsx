@@ -9,6 +9,7 @@ export default function StorageCard({ storage, onDetails, onAdd }) {
           <img
             src={storage.image_url}
             alt="Storage"
+            referrerPolicy="no-referrer"
             onError={(e) => (e.target.style.display = "none")}
           />
         </div>

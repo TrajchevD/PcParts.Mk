@@ -1,30 +1,40 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { fetchCpus } from "../api/cpuProducts";
 import CpuCard from "../components/cpu/CpuCard";
 import CpuDetailsModal from "../components/cpu/CpuDetailsModal";
-import CategoryNav from "../components/CategoryNav";
+import MobileNavBar from "../components/MobileNavBar";
 
 export default function CpuProductsPage() {
+  const [searchParams] = useSearchParams();
   const [cpus, setCpus] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCpu, setSelectedCpu] = useState(null);
   const [sort, setSort] = useState("price_asc");
   const [filters, setFilters] = useState({ brand: "", socket: "", min_cores: "", min_price: "", max_price: "" });
+  const [search, setSearch] = useState(searchParams.get("q") || "");
+
+  useEffect(() => { setSearch(searchParams.get("q") || ""); }, [searchParams]);
 
   useEffect(() => {
     setLoading(true);
-    fetchCpus({ ...filters, sort })
+    fetchCpus({ ...filters, sort, search: search || undefined })
       .then(setCpus)
       .finally(() => setLoading(false));
-  }, [filters, sort]);
+  }, [filters, sort, search]);
 
   return (
     <div className="cpu-page">
-      <CategoryNav />
+      <MobileNavBar title="CPUs" />
       <aside className="cpu-filters">
         <h3 onClick={() => setSort(s => s === "price_asc" ? "price_desc" : "price_asc")}>
           CPUs <span>{sort === "price_asc" ? "↑" : "↓"}</span>
         </h3>
+
+        <label>
+          Search
+          <input type="text" placeholder="e.g. Ryzen 5 7600" value={search} onChange={e => setSearch(e.target.value)} />
+        </label>
 
         <label>
           Brand

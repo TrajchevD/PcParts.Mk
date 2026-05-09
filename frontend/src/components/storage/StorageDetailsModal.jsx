@@ -33,7 +33,12 @@ export default function StorageDetailsModal({ productId, onClose, onAdd }) {
           <div className="details-layout">
             <div className="details-left">
               <div className="details-image">
-                <img src={data.offers[0]?.image_url} alt="Storage" />
+                <img
+                  src={data.offers.find(o => o.image_url)?.image_url}
+                  alt="Storage"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => (e.target.style.display = "none")}
+                />
               </div>
 
               <div className="details-specs">

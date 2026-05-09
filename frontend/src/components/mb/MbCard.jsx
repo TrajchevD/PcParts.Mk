@@ -6,7 +6,7 @@ export default function MbCard({ mb, onAdd, onDetails }) {
         onClick={() => onDetails(mb.product_id)}
       >
         <div className="pc-card-image">
-          <img src={mb.image_url} alt={mb.mb_model} />
+          <img src={mb.image_url} alt={mb.mb_model} referrerPolicy="no-referrer" onError={(e) => (e.target.style.display = "none")} />
         </div>
 
         <div className="pc-card-title">{mb.mb_model}</div>

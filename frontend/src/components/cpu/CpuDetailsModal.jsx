@@ -40,8 +40,10 @@ export default function CpuDetailsModal({ cpuModel, onClose, onAdd }) {
   <div className="details-left">
     <div className="details-image">
       <img
-        src={data.offers[0]?.image_url}
+        src={data.offers.find(o => o.image_url)?.image_url}
         alt={data.cpu_model}
+        referrerPolicy="no-referrer"
+        onError={(e) => (e.target.style.display = "none")}
       />
     </div>
 

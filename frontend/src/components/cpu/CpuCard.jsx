@@ -3,7 +3,7 @@ export default function CpuCard({ cpu, onAdd, onDetails }) {
     <div className="pc-card">
       <div className="pc-card-click" onClick={() => onDetails(cpu.cpu_model)}>
         <div className="pc-card-image">
-          <img src={cpu.image_url} alt={cpu.cpu_model} />
+          <img src={cpu.image_url} alt={cpu.cpu_model} referrerPolicy="no-referrer" onError={(e) => (e.target.style.display = "none")} />
         </div>
         <div className="pc-card-title">{cpu.cpu_model}</div>
         <div className="pc-card-price">from <b>{cpu.min_price} MKD</b></div>

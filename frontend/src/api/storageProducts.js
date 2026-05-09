@@ -1,6 +1,7 @@
 import { apiFetch } from "./api";
 
 export function fetchStorage({
+  search,
   type,
   capacity_gb,
   sort = "price_asc",
@@ -9,6 +10,7 @@ export function fetchStorage({
 } = {}) {
   const params = new URLSearchParams();
 
+  if (search) params.append("search", search);
   if (type) params.append("type", type);
   if (capacity_gb) params.append("capacity_gb", capacity_gb);
   params.append("sort", sort);

@@ -1,16 +1,27 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+
+const CATALOG_PAGES = [
+  "/catalog/cpu",
+  "/catalog/gpu",
+  "/catalog/mb",
+  "/catalog/ram",
+  "/catalog/storage",
+];
 
 export default function TopBar({ onShowLogin, onToggleSidebar }) {
   const { token, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [query, setQuery] = useState("");
 
   function handleSearch(e) {
     e.preventDefault();
     if (!query.trim()) return;
-    navigate(`/catalog/gpu?q=${encodeURIComponent(query.trim())}`);
+    const q = encodeURIComponent(query.trim());
+    const target = CATALOG_PAGES.find(p => location.pathname.startsWith(p)) || "/catalog/gpu";
+    navigate(`${target}?q=${q}`);
     setQuery("");
   }
 

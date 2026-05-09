@@ -35,8 +35,10 @@ export default function GpuDetailsModal({ gpu, onClose, onAdd }) {
             <div className="details-left">
               <div className="details-image">
                 <img
-                  src={data.offers[0]?.image_url}
+                  src={data.offers.find(o => o.image_url)?.image_url}
                   alt={`${data.gpu_model} ${data.specs.vram_gb}GB`}
+                  referrerPolicy="no-referrer"
+                  onError={(e) => (e.target.style.display = "none")}
                 />
               </div>
 
