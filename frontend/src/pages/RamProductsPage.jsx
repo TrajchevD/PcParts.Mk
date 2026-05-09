@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchRams } from "../api/ramProducts";
 import RamCard from "../components/ram/RamCard";
 import RamDetailsModal from "../components/ram/RamDetailsModal";
+import CategoryNav from "../components/CategoryNav";
 
 export default function RamProductsPage() {
   const [rams, setRams] = useState([]);
@@ -16,6 +17,7 @@ export default function RamProductsPage() {
 
   return (
     <div className="cpu-page">
+      <CategoryNav />
       <aside className="cpu-filters">
         <h3>RAM</h3>
 

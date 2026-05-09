@@ -1138,6 +1138,8 @@ label {
    CATALOG PAGES (cpu-page, cpu-filters, cpu-grid)
    ========================================================== */
 
+.cat-nav { display: none; }
+
 .cpu-page {
   display: grid;
   grid-template-columns: 220px 1fr;
@@ -2219,7 +2221,7 @@ label {
 /* ── Hamburger button (hidden on desktop) ────────────────── */
 
 .hamburger-btn {
-  display: flex;
+  display: none;
   background: none;
   border: none;
   color: var(--text-dim);
@@ -2381,6 +2383,36 @@ label {
   .cyber-categories    { padding: 48px 16px; }
   .cyber-grid          { grid-template-columns: 1fr; gap: 12px; max-width: 100%; }
   .cyber-card          { padding: 24px 20px; }
+
+  /* ── Category switcher strip — mobile only ── */
+  .cat-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 2px 0 8px;
+    grid-column: 1 / -1;
+    scrollbar-width: none;
+  }
+  .cat-nav::-webkit-scrollbar { display: none; }
+
+  .cat-nav-link {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-card);
+    color: var(--text-dim);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.18s;
+  }
+  .cat-nav-link.active {
+    background: rgba(124, 58, 237, 0.25);
+    border-color: rgba(124, 58, 237, 0.6);
+    color: white;
+  }
 
   /* ── Catalog pages — stack filter above grid ── */
   .cpu-page {

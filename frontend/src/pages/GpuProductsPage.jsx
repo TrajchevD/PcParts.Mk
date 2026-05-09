@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchGpus } from "../api/gpuProducts";
 import GpuCard from "../components/gpu/GpuCard";
 import GpuDetailsModal from "../components/gpu/GpuDetailsModal";
+import CategoryNav from "../components/CategoryNav";
 
 export default function GpuProductsPage() {
   const [gpus, setGpus] = useState([]);
@@ -25,6 +26,7 @@ export default function GpuProductsPage() {
 
   return (
     <div className="cpu-page">
+      <CategoryNav />
       <aside className="cpu-filters">
         <h3 onClick={() => setSort(s => s === "price_asc" ? "price_desc" : "price_asc")}>
           GPUs <span>{sort === "price_asc" ? "↑" : "↓"}</span>

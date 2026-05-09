@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchMotherboards } from "../api/mbProducts";
 import MbCard from "../components/mb/MbCard";
 import MbDetailsModal from "../components/mb/MbDetailsModal";
+import CategoryNav from "../components/CategoryNav";
 
 export default function MbProductsPage() {
   const [mbs, setMbs] = useState([]);
@@ -17,6 +18,7 @@ export default function MbProductsPage() {
 
   return (
     <div className="cpu-page">
+      <CategoryNav />
       <aside className="cpu-filters">
         <h3 onClick={() => setSort(s => s === "price_asc" ? "price_desc" : "price_asc")}>
           Motherboards <span>{sort === "price_asc" ? "↑" : "↓"}</span>

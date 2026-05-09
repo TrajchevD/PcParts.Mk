@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchStorage } from "../api/storageProducts";
 import StorageCard from "../components/storage/StorageCard";
 import StorageDetailsModal from "../components/storage/StorageDetailsModal";
+import CategoryNav from "../components/CategoryNav";
 
 export default function StorageProductsPage({ onSelect }) {
   const [items, setItems] = useState([]);
@@ -19,6 +20,7 @@ export default function StorageProductsPage({ onSelect }) {
 
   return (
     <div className="cpu-page">
+      <CategoryNav />
       <aside className="cpu-filters">
         <h3 onClick={() => setSort(s => s === "price_asc" ? "price_desc" : "price_asc")}>
           Storage <span>{sort === "price_asc" ? "↑" : "↓"}</span>

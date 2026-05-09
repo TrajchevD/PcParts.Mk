@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchCpus } from "../api/cpuProducts";
 import CpuCard from "../components/cpu/CpuCard";
 import CpuDetailsModal from "../components/cpu/CpuDetailsModal";
+import CategoryNav from "../components/CategoryNav";
 
 export default function CpuProductsPage() {
   const [cpus, setCpus] = useState([]);
@@ -19,6 +20,7 @@ export default function CpuProductsPage() {
 
   return (
     <div className="cpu-page">
+      <CategoryNav />
       <aside className="cpu-filters">
         <h3 onClick={() => setSort(s => s === "price_asc" ? "price_desc" : "price_asc")}>
           CPUs <span>{sort === "price_asc" ? "↑" : "↓"}</span>
