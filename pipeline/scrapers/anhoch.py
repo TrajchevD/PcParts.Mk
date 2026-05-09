@@ -43,6 +43,8 @@ def _parse_item(item: dict, category: str) -> dict | None:
         image = base_image.get("path")
     elif isinstance(base_image, list) and base_image:
         image = base_image[0].get("path")
+    if image and not image.startswith("http"):
+        image = "https://www.anhoch.com" + image
 
     return {
         "store":    STORE_NAME,
