@@ -34,6 +34,8 @@ export default function CompareTable({ category, items = [], onAdd, onRemove }) 
                     src={item.image_url}
                     alt={item.model}
                     className="compare-header-img"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => (e.target.style.display = "none")}
                   />
                 )}
                 <div className="compare-header-model">

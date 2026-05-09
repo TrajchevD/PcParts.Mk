@@ -5,7 +5,7 @@ export default function CompareSlots({ category, slots = [], items = [], onChang
   const MAX = 4;
 
   // Ensure we always have at least 2 visible slots
-  const visibleSlots = slots.length ? slots : [null];
+  const visibleSlots = slots.length ? slots : [null, null];
 
   function addSlot() {
     if (slots.length >= MAX) return;

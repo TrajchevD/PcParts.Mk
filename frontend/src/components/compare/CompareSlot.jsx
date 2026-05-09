@@ -54,6 +54,8 @@ return (
         src={item.image_url}
         alt={item.model}
         className="compare-card-image"
+        referrerPolicy="no-referrer"
+        onError={(e) => (e.target.style.display = "none")}
       />
     )}
 

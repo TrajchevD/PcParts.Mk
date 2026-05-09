@@ -8,8 +8,8 @@ router = APIRouter(prefix="/api/compare", tags=["compare"])
 
 @router.post("")
 def compare(body: CompareRequest):
-    if not body.ids or len(body.ids) < 2:
-        raise HTTPException(400, "Provide at least 2 product ids to compare")
+    if not body.ids:
+        raise HTTPException(400, "Provide at least one product id")
     try:
         items = compare_products(body.category, body.ids)
     except ValueError as exc:
