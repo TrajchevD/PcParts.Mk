@@ -4,7 +4,7 @@ A PC parts price-comparison and build-planning platform for the Macedonian marke
  
 🔗 **Live app:** [pc-parts-mk.vercel.app](https://pc-parts-mk.vercel.app)
 
-<img src="HomePage.png" width="500" alt="PC Builder interface">
+<img src="HomePage.png" width="500" alt="PC Builder interface">     <img src="Screenshot_1.png" width="200" alt="PC Builder interface">
 ## What it does
  
 - **Live price scraping**  scheduled scrapers pull current listings from Macedonian retailers (Neptun, Setec, Gjirafa, Anhoch) and normalize them into a shared schema (brand, model, specs, price, stock status).
