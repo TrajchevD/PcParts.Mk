@@ -2,7 +2,7 @@
  
 A PC parts price-comparison and build-planning platform for the Macedonian market. It scrapes live offers from local computer stores, normalizes them into a single catalog, and lets users search, compare, build, and get budget-based recommendations all in one place.
  
-🔗 **Live app:** [pc-parts-mk.vercel.app](https://pc-parts-mk.vercel.app)
+🔗 **Live demo:** [pc-parts-mk.vercel.app](https://pc-parts-mk.vercel.app)
 
 <img src="HomePage.png" width="500" alt="PC Builder interface">     <img src="Screenshot_1.png" width="200" alt="PC Builder interface">
 ## What it does
@@ -31,7 +31,6 @@ This is a three-service system:
 | Backend | FastAPI, Pydantic v2, PyJWT, bcrypt, APScheduler |
 | Database | MySQL 8 |
 | Pipeline | Python, `mysql-connector-python`, custom scrapers per retailer |
-| Infra | Docker Compose, nginx, GitHub Actions |
 <table>
   <tr>
     <td width="50%"><img src="cpu_page.png" alt="Product listing with filters"></td>
